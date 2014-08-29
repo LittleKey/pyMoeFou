@@ -12,7 +12,7 @@ class MoeFou(object):
         self.api_key = '09edf82ae867ef45f95136105eefcd5c053fc66bc'
 
     def GetSongByName(self, name):
-        return self.GetSoneFromSub(name)
+        return self.GetSongFromSub(name)
 
     def GetMusicByName(self, name):
         return self.GetMusicFromWiki(name)
@@ -57,7 +57,7 @@ class MoeFou(object):
 
     def __getattribute__(self, name):
         matchGet = re.compile(r"^Get(.*?)From(.*?)$")
-        if len(name) > 7 and name.startswith("_Search"):
+        if name.startswith("_Search"):
             url = name[7:].lower()
             return lambda d: self._Search(url, d)
         elif matchGet.match(name):
