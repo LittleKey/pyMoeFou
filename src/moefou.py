@@ -87,10 +87,11 @@ class MoeFou(object):
         return self._Get('http://api.moefou.org/search/{}.json'.format(wikiType), data)
 
     def __getattribute__(self, name):
-        matchGet = re.compile(r"^Get(.*?)From(.*?)$")
-        matchGetByID = re.compile(r"^Get(.*?)ByID$", re.I)
-        if name.startswith("_Search"):
-            url = name[7:].lower()
+        matchSearch = re.compile(r"^_Search(.+?)$", re.I)
+        matchGet = re.compile(r"^Get(.+?)From(.+?)$")
+        matchGetByID = re.compile(r"^Get(.+?)ByID$", re.I)
+        if matchSearch.match(name):
+            url = matchSearch.findall(name)[0].lower()
             return lambda d: self._Search(url, d)
         elif matchGet.match(name):
             t, w = map(lambda s: s.lower(), matchGet.findall(name)[0])
