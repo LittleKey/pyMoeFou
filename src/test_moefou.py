@@ -45,5 +45,23 @@ class TestMoeFou(unittest.TestCase):
 
         self.assertEqual(rlt, [s])
 
+    def test_GetSongByMusic(self):
+        m = self.mf.GetMusicByName("光明之刃")[0]
+        rlt = self.mf.GetSongByMusic(m)
+
+        self.assertEqual(rlt[-1], self.mf.GetSongByID(95297))
+
+    def test_GetSongByID(self):
+        s1 = self.mf.GetSongByID(95297)
+        s2 = self.mf.GetSongByName("生命の桜歌")[0]
+
+        self.assertEqual(s1, s2)
+
+    def test_GetMusicByID(self):
+        m1 = self.mf.GetMusicByID(11093)
+        m2 = self.mf.GetMusicByName("光明之刃")[0]
+
+        self.assertEqual(m1, m2)
+
 if __name__ == '__main__':
     unittest.main()

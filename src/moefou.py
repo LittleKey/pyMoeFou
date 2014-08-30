@@ -5,6 +5,12 @@ import requests
 import re
 import itemfactory
 
+def undefine(func):
+    def RaiseNameError(s, *a):
+        raise NameError("Not define {} on {}".format(func.__name__, s.__class__))
+
+    return RaiseNameError
+
 
 class MoeFou(object):
 
@@ -17,29 +23,55 @@ class MoeFou(object):
     def GetMusicByName(self, name):
         return self.GetMusicFromWiki(name)
 
-    #def _SearchWiki(self, data):
-    #    return self._Get('http://api.moefou.org/search/wiki.json', data)
-
-    #def SearchSub(self, data):
-    #    return self._Get('http://api.moefou.org/search/sub.json', data)
-
-    def _GetSthFromSwer(self, sth, swer, name):
+    @undefine
+    def GetSongByID(self, ID):
+        return self.GetItemByID("song", ID)
         data = {
-                'keyword': name,
-                'wiki_type': sth,
-                'page': 1,
-                'api_key': self.api_key
+                "sub_id": ID,
+                "api_key": self.api_key
                 }
 
+        d = self._Get("http://api.moefou.org/song/detail.json", data)
+        itemFactory = itemfactory.ItemFactory("sub")
+
+        return itemFactory.Get(d["sub"])
+
+    @undefine
+    def GetMusicByID(self, ID):
+        return self.GetItemByID("music", ID)
+        data = {
+                "wiki_id": ID,
+                "api_key": self.api_key
+                }
+
+        d = self._Get("http://api.moefou.org/music/detail.json", data)
+        itemFactory = itemfactory.ItemFactory("wiki")
+
+        return itemFactory.Get(d["wiki"])
+
+    def _GetItemByID(self, item, ID):
+        t = item == "song" and "sub" or "wiki"
+        data = {
+                "{}_id".format(t): ID,
+                "api_key": self.api_key
+                }
+
+        d = self._Get("http://api.moefou.org/{}/detail.json".format(item), data)
+        itemFactory = itemfactory.ItemFactory(t)
+
+        return itemFactory.Get(d[t])
+
+    def _GetAllPage(self, nextIter, t):
+        itemFactory = itemfactory.ItemFactory(t)
         rlt = []
-        itemFactory = itemfactory.ItemFactory(swer)
         haveNext = True
+        page = 1
 
         while haveNext:
-            d = self.__getattribute__("_Search" + swer).__call__(data)
+            d = nextIter(page)
 
             dInfo = d['information']
-            dList = d[swer + 's'] or []
+            dList = d[t + 's'] or []
 
             if dInfo['has_error']:
                 raise Exception('Has error in search from moefou')
@@ -47,22 +79,51 @@ class MoeFou(object):
             for it in dList:
                 rlt.append(itemFactory.Get(it))
 
-            data['page'] += 1
+            page += 1
             haveNext = dInfo.get('may_have_next', False)
 
         return rlt
+
+    def GetSongByMusic(self, m):
+        def nextIter(page):
+            data = {
+                    "wiki_id": m.id,
+                    "api_key": self.api_key,
+                    "page": page
+                    }
+
+            return self._Get("http://api.moefou.org/music/subs.json", data)
+
+        return self._GetAllPage(nextIter, 'sub')
+
+    def _GetSthFromSwer(self, sth, swer, name):
+        def nextIter(page):
+            data = {
+                    'keyword': name,
+                    'wiki_type': sth,
+                    'page': page,
+                    'api_key': self.api_key
+                    }
+
+            return self.__getattribute__("_Search" + swer).__call__(data)
+
+        return self._GetAllPage(nextIter, swer)
 
     def _Search(self, wikiType, data):
         return self._Get('http://api.moefou.org/search/{}.json'.format(wikiType), data)
 
     def __getattribute__(self, name):
         matchGet = re.compile(r"^Get(.*?)From(.*?)$")
+        matchGetByID = re.compile(r"^Get(.*?)ByID$", re.I)
         if len(name) > 7 and name.startswith("_Search"):
             url = name[7:].lower()
             return lambda d: self._Search(url, d)
         elif matchGet.match(name):
             t, w = map(lambda s: s.lower(), matchGet.findall(name)[0])
             return lambda n: self._GetSthFromSwer(sth=t, swer=w, name=n)
+        elif matchGetByID.match(name):
+            item = matchGetByID.findall(name)[0].lower()
+            return lambda ID: self._GetItemByID(item, ID)
         else:
             return super(MoeFou, self).__getattribute__(name)
 
