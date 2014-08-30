@@ -14,8 +14,8 @@ def undefine(func):
 
 class MoeFou(object):
 
-    def __init__(self):
-        self.api_key = '09edf82ae867ef45f95136105eefcd5c053fc66bc'
+    def __init__(self, api_key='09edf82ae867ef45f95136105eefcd5c053fc66bc'):
+        self.api_key = api_key
 
     def GetSongByName(self, name):
         return self.GetSongFromSub(name)
