@@ -23,32 +23,6 @@ class MoeFou(object):
     def GetMusicByName(self, name):
         return self.GetMusicFromWiki(name)
 
-    @undefine
-    def GetSongByID(self, ID):
-        return self.GetItemByID("song", ID)
-        data = {
-                "sub_id": ID,
-                "api_key": self.api_key
-                }
-
-        d = self._Get("http://api.moefou.org/song/detail.json", data)
-        itemFactory = itemfactory.ItemFactory("sub")
-
-        return itemFactory.Get(d["sub"])
-
-    @undefine
-    def GetMusicByID(self, ID):
-        return self.GetItemByID("music", ID)
-        data = {
-                "wiki_id": ID,
-                "api_key": self.api_key
-                }
-
-        d = self._Get("http://api.moefou.org/music/detail.json", data)
-        itemFactory = itemfactory.ItemFactory("wiki")
-
-        return itemFactory.Get(d["wiki"])
-
     def _GetItemByID(self, item, ID):
         t = item == "song" and "sub" or "wiki"
         data = {
