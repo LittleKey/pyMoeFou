@@ -42,6 +42,9 @@ class TestItem(unittest.TestCase):
     def test___repr__(self):
         self.assertEqual(repr(self.t), "[['1', '2', {1: 2}, 3], 1974, Yooo~]")
 
+    def test_GetKeys(self):
+        self.assertEqual(self.t.GetKeys(), ["list", "id", "name"])
+
 
 if __name__ == '__main__':
     unittest.main()

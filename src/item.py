@@ -29,6 +29,9 @@ class Item(object):
 
         return rlt
 
+    def GetKeys(self):
+        return self._data.keys()
+
     def __getattribute__(self, name):
         if (name != "_data") and (name in self._data.keys()):
             return self._data[str(name).lower()]
