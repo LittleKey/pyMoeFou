@@ -70,6 +70,14 @@ class MoeFou(object):
 
         return self._GetAllPage(nextIter, 'sub')
 
+    def GetUpBySong(self, s):
+        itemF = itemfactory.ItemFactory("up")
+        upList = []
+        for up in s.upload:
+            upList.append(itemF.Get(up))
+
+        return upList
+
     def _GetSthFromSwer(self, sth, swer, name):
         def nextIter(page):
             data = {

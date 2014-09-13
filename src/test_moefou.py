@@ -5,6 +5,7 @@ import unittest
 import moefou
 from song import Song
 from music import Music
+from itemfactory import ItemFactory
 import json
 
 
@@ -62,6 +63,12 @@ class TestMoeFou(unittest.TestCase):
         m2 = self.mf.GetMusicByName("光明之刃")[0]
 
         self.assertEqual(m1, m2)
+
+    def test_GetUpBySong(self):
+        s = self.mf.GetSongByName("hello goodbye &amp; hello")
+        up = self.mf.GetUpBySong(s[0])[0]
+
+        self.assertEqual(up.url, "http://nyan.90g.org/c/4/58/c11b0b0dbb1a9fb18980484a9480534a.mp3")
 
 if __name__ == '__main__':
     unittest.main()
