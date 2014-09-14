@@ -71,6 +71,9 @@ class MoeFou(object):
         return self._GetAllPage(nextIter, 'sub')
 
     def GetUpBySong(self, s):
+        if not 'upload' in s.GetKeys():
+            raise KeyError('No "upload" key in {}'.format(s))
+
         itemF = itemfactory.ItemFactory("up")
         upList = []
         for up in s.upload:

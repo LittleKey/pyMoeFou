@@ -5,7 +5,6 @@ import unittest
 import moefou
 from song import Song
 from music import Music
-from itemfactory import ItemFactory
 import json
 
 
