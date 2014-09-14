@@ -54,7 +54,8 @@ class MoeFou(object):
                 rlt.append(itemFactory.Get(it))
 
             page += 1
-            haveNext = dInfo.get('may_have_next', False)
+            #haveNext = dInfo.get('may_have_next', False)
+            haveNext = dInfo['count'] > dInfo['page']*dInfo['perpage']
 
         return rlt
 
