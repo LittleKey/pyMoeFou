@@ -25,7 +25,7 @@ class Item(object):
     def GetInfo(self, formatStr):
         rlt = formatStr
         for k, v in self._data.items():
-            rlt = rlt.replace('%' + str(k), str(v))
+            rlt = rlt.replace('%{}'.format(k), format(v).encode('utf8'))
 
         return rlt
 
