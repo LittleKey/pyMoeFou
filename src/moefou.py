@@ -86,7 +86,7 @@ class MoeFou(object):
         def nextIter(page):
             data = {
                     'keyword': name,
-                    'wiki_type': sth,
+                    '{}_type'.format(swer): sth,
                     'page': page,
                     'api_key': self.api_key
                     }
