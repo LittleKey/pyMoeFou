@@ -4,12 +4,19 @@
 import requests
 import re
 import itemfactory
+import sys
 
 def undefine(func):
     def RaiseNameError(s, *a):
         raise NameError("Not define {} on {}".format(func.__name__, s.__class__))
 
     return RaiseNameError
+
+def SupportUTF(name):
+    if sys.platform.lower() == 'linux2':
+        return name
+    else:
+        return name.decode("gbk")
 
 
 class MoeFou(object):
@@ -18,9 +25,11 @@ class MoeFou(object):
         self.api_key = api_key
 
     def GetSongByName(self, name):
+        name = SupportUTF(name)
         return self.GetSongFromSub(name)
 
     def GetMusicByName(self, name):
+        name = SupportUTF(name)
         return self.GetMusicFromWiki(name)
 
     def _GetItemByID(self, item, ID):
