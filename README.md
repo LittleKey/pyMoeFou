@@ -2,6 +2,8 @@ pyMoeFou
 ========
 
    [![Coverage Status](https://coveralls.io/repos/LittleKey/pyMoeFou/badge.svg)](https://coveralls.io/r/LittleKey/pyMoeFou)
+   
+   [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/LittleKey/pymoefou/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
    moeFou python library.
 
@@ -12,7 +14,4 @@ pyMoeFou
 
    有可能会提供播放流媒体的功能
 
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/LittleKey/pymoefou/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
