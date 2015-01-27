@@ -1,6 +1,8 @@
 pyMoeFou
 ========
 
+   [![Coverage Status](https://coveralls.io/repos/LittleKey/pyMoeFou/badge.svg)](https://coveralls.io/r/LittleKey/pyMoeFou)
+
    moeFou python library.
 
 
