@@ -12,3 +12,7 @@ pyMoeFou
 
    有可能会提供播放流媒体的功能
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/LittleKey/pymoefou/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
